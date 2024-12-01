@@ -81,6 +81,75 @@ Register a new user by creating a user account with the provided information.
 }
 ```
 
+## `/users/login` Endpoint
+
+### Description
+Authenticate an existing user and retrieve an authentication token.
+
+### HTTP Method
+`POST`
+
+### Request Body
+```json
+{
+    "email": "john@example.com",
+    "password": "password123"
+}
+```
+
+### Validation Rules
+- **email**: 
+  - Required
+  - Must be a valid email format
+  - Minimum 5 characters
+- **password**:
+  - Required
+  - Minimum 6 characters
+
+### Responses
+
+#### Success Response
+**Code**: `200 OK`
+
+**Content example**:
+```json
+{
+    "token": "jwt_token_here",
+    "user": {
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "john@example.com",
+        "_id": "user_id_here"
+    }
+}
+```
+
+#### Error Responses
+
+**Condition**: Validation errors (invalid input)  
+**Code**: `400 Bad Request`
+```json
+{
+    "errors": [
+        {
+            "msg": "Invalid email",
+            "param": "email"
+        }
+    ]
+}
+```
+
+**Condition**: Invalid credentials  
+**Code**: `401 Unauthorized`
+```json
+{
+    "message": "Invalid credentials"
+}
+```
+
+
 ### Security
 - Password is hashed using bcrypt before storage
 - JWT token is generated upon successful registration
